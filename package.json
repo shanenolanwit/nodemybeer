@@ -1,0 +1,18 @@
+{
+  "name": "nodemybeer",
+  "version": "1.0.0",
+  "description": "demo web service for android app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "nodemon index.js"
+  },
+  "author": "Shane Nolan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}
