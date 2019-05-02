@@ -13,6 +13,66 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => res.send('Welcome to NodeMyBeer'))
 
+app.post('/auth', function (req, res) {
+  console.log(req.body);
+  let data = { 
+    email : req.body.email,
+    password : req.body.password
+  };
+  let count = 0;
+  let sql = `select (select count(*) from user where email = 'shane') as 'exists', (select count(*) from user where email = 'shane' && password = 'blah') as 'auth' from user limit 1`;
+  // let sql = `Select count(*) from user where email = ? && password = ?`;
+  sql = `select (select count(*) from user where email = ?) as 'exists', (select count(*) from user where email = ? AND password = ?) as 'auth' limit 1`;
+  console.log(sql);
+  let query = conn.query(sql, [data.email,data.email,data.password], (err, results) => {
+    if(err){
+      console.log(err);
+      res.json({
+        email: req.body.email,
+        authenticated: false,
+        newUser: false
+
+      })
+    }
+    else{
+      console.log(results[0]);
+      console.log(results[0].exists);
+      console.log(results[0].auth);
+      if(results[0].exists < 1){
+        sql = "INSERT INTO user SET ?";  
+        query = conn.query(sql, data, (err, results) => {
+          if(err){
+            console.log(err);
+            res.json({
+              email: req.body.email,
+              authenticated: false,
+              newUser: false
+            })
+          }
+          else{
+            console.log("success");
+            res.json({
+              email: req.body.email,
+              authenticated: true,
+              newUser: true
+            })
+          }
+        });
+      } else {
+        res.json({
+          email: req.body.email,
+          authenticated: (results[0].auth === 1),
+          newUser: false
+        })
+      }
+     
+      
+    }
+  });
+ 
+});
+
+
 app.post('/beers/new', function (req, res) {
   
   let data = { 
