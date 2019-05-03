@@ -1,6 +1,11 @@
 const express = require('express')
 const mysql = require('mysql');
 const bodyParser = require('body-parser')
+const { base64encode, base64decode } = require('nodejs-base64');
+const crypto = require('crypto');
+
+
+
 
 var db = require('./database/sqlConnector.js');
 var conn = db();
@@ -15,14 +20,14 @@ app.get('/', (req, res) => res.send('Welcome to NodeMyBeer'))
 
 app.post('/auth', function (req, res) {
   console.log(req.body);
+  const hash = crypto.createHash('sha256');
+  hash.update(req.body.password.trim())
   let data = { 
-    email : req.body.email,
-    password : req.body.password
+    email : req.body.email.trim(),
+    password : hash.digest('hex')
   };
   let count = 0;
-  let sql = `select (select count(*) from user where email = 'shane') as 'exists', (select count(*) from user where email = 'shane' && password = 'blah') as 'auth' from user limit 1`;
-  // let sql = `Select count(*) from user where email = ? && password = ?`;
-  sql = `select (select count(*) from user where email = ?) as 'exists', (select count(*) from user where email = ? AND password = ?) as 'auth' limit 1`;
+   let sql = `select (select count(*) from user where email = ?) as 'exists', (select count(*) from user where email = ? AND password = ?) as 'auth' limit 1`;
   console.log(sql);
   let query = conn.query(sql, [data.email,data.email,data.password], (err, results) => {
     if(err){
@@ -35,9 +40,6 @@ app.post('/auth', function (req, res) {
       })
     }
     else{
-      console.log(results[0]);
-      console.log(results[0].exists);
-      console.log(results[0].auth);
       if(results[0].exists < 1){
         sql = "INSERT INTO user SET ?";  
         query = conn.query(sql, data, (err, results) => {
@@ -81,7 +83,8 @@ app.post('/beers/new', function (req, res) {
     date : req.body.date,
     name : req.body.name,
     review : req.body.review,
-    base64img : req.body.base64img
+    base64img : req.body.base64img,
+    email: req.body.email
   };
   let sql = "INSERT INTO beer SET ?";  
   console.log(sql);
@@ -155,9 +158,9 @@ app.delete('/beers/delete/:id', function (req, res) {
 });
 
 app.get('/beers', function (req, res) {
-  let sql = "SELECT * FROM beer";  
+  let sql = "SELECT * FROM beer WHERE email = ?";  
   console.log(sql);
-  let query = conn.query(sql, {}, (err, results) => {
+  let query = conn.query(sql, [req.query.email], (err, results) => {
     if(err){
       console.log(err);
       res.json({
@@ -216,9 +219,10 @@ app.get('/locate/:name', function (req, res) {
 });
 
 app.get('/count', function (req, res) {  
-  let sql = "SELECT date, count(*) AS count FROM beer GROUP BY date ORDER BY date ASC";  
+  let email = req.query.email;
+  let sql = "SELECT date, count(*) AS count FROM beer where email = ? GROUP BY date ORDER BY date ASC";  
   console.log(sql);
-  let query = conn.query(sql, {}, (err, results) => {
+  let query = conn.query(sql, [req.query.email], (err, results) => {
     if(err){
       console.log(err);
       res.json({
@@ -239,13 +243,12 @@ app.get('/count', function (req, res) {
 
 
 app.post('/count', function (req, res) {
-  console.log(req.body);  
   let fromDate = req.body.fromDate;
   let toDate = req.body.toDate;
 
-  let sql = `SELECT date, COUNT(*) AS count FROM beer WHERE date >= '${fromDate}' && date <= '${toDate}' GROUP BY date ORDER BY date ASC`;  
+  let sql = `SELECT date, COUNT(*) AS count FROM beer WHERE date >= '${fromDate}' && date <= '${toDate}' && email = ? GROUP BY date ORDER BY date ASC`;  
   console.log(sql);
-  let query = conn.query(sql, {}, (err, results) => {
+  let query = conn.query(sql, [req.query.email], (err, results) => {
     if(err){
       console.log(err);
       res.json({
