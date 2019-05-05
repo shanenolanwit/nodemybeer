@@ -4,7 +4,7 @@ CREATE TABLE `beer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `review` varchar(255) DEFAULT NULL,
-  `latitude` decimal(10,8) NOT NULL,
+  `latitude` bigint(20) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
   `date` date DEFAULT NULL,
   `base64img` text NOT NULL,
