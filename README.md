@@ -70,11 +70,11 @@ mysql> show tables;
 ## API Usage ##
 GET `/`  
 Root path, used to check node app is deployed correctly  
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/
 ```
-### RESPONSE ###
+### Response ###
 ```
 Welcome to NodeMyBeer
 ```
@@ -131,11 +131,11 @@ Creates a new beer
 
 POST `/beers/update/:id`  
 Updates the beet with the given id  
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/beers/update/30
 ```
-### REQUEST BODY ###
+### Request Body ###
 ```
 {
 	"coordinates": {
@@ -149,7 +149,7 @@ localhost:3000/beers/update/30
     "email": "bruce.wayne@gothamcitycouncil.com"
 }
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": {
@@ -167,11 +167,11 @@ localhost:3000/beers/update/30
 
 GET `/beers?email=[email]`   
 Gets beers specific to a given email
-### REQUEST ### 
+### Request ### 
 ```
 localhost:3000/beers?email=bruce.wayne@gothamcitycouncil.com
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -191,11 +191,11 @@ localhost:3000/beers?email=bruce.wayne@gothamcitycouncil.com
 
 GET `/beers/:id`  
 Gets a beer with a specific id
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/beers/30
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -215,11 +215,11 @@ localhost:3000/beers/30
 
 GET `/locate/`   
 Gets all beers  
-### REQUEST ### 
+### Request ### 
 ```
 localhost:3000/locate
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -239,11 +239,11 @@ localhost:3000/locate
 
 GET `/locate/:name`   
 Gets all beers with a specific name
-### REQUEST ### 
+### Request ### 
 ```
 localhost:3000/locate/hoegarden
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -263,11 +263,11 @@ localhost:3000/locate/hoegarden
 
 GET `/count?email=[email]` 
 Gets a breakdown of beers added by date specific to a given email  
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -282,18 +282,18 @@ localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
 
 POST `/count?email=[email]`   
 Gets a breakdown of beers added by date specific to a given email in a given timeframe  
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
 ```  
-### REQUEST BODY ###  
+### Request Body ###  
 ```
 {
     "fromDate": "2019-12-23",
     "toDate": "2019-12-27"
 }
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": [
@@ -307,11 +307,11 @@ localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
 ```
 DELETE `/beers/delete/:id`  
 Deletes a beer with a given id
-### REQUEST ###
+### Request ###
 ```
 localhost:3000/beers/delete/30
 ```
-### RESPONSE ###
+### Response ###
 ```
 {
     "data": {
