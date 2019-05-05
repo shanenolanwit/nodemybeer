@@ -68,6 +68,7 @@ mysql> show tables;
 ```
 
 ## API Usage ##
+---
 GET `/`  
 Root path, used to check node app is deployed correctly  
 ### Request ###
@@ -78,7 +79,7 @@ localhost:3000/
 ```
 Welcome to NodeMyBeer
 ```
-
+---
 POST `/auth`   
 Validates login requests and registers new accounts
 ### Request Body ###
@@ -96,7 +97,7 @@ Validates login requests and registers new accounts
     "newUser": true
 }
 ```
-
+---
 POST `/beers/new`  
 Creates a new beer
 ### Request Body ###
@@ -128,7 +129,7 @@ Creates a new beer
     }
 }
 ```
-
+---
 POST `/beers/update/:id`  
 Updates the beet with the given id  
 ### Request ###
@@ -138,10 +139,10 @@ localhost:3000/beers/update/30
 ### Request Body ###
 ```
 {
-	"coordinates": {
-		"latitude": "245",
-    	"longitude": "-123"
-	},
+    "coordinates": {
+        "latitude": "245",
+        "longitude": "-123"
+    },
     "date": "2019-12-24",
     "name": "hoegarden",
     "review": "excellent",
@@ -164,7 +165,7 @@ localhost:3000/beers/update/30
     }
 }
 ```
-
+---
 GET `/beers?email=[email]`   
 Gets beers specific to a given email
 ### Request ### 
@@ -188,7 +189,7 @@ localhost:3000/beers?email=bruce.wayne@gothamcitycouncil.com
     ]
 }
 ```
-
+---
 GET `/beers/:id`  
 Gets a beer with a specific id
 ### Request ###
@@ -212,7 +213,7 @@ localhost:3000/beers/30
     ]
 }
 ```
-
+---
 GET `/locate/`   
 Gets all beers  
 ### Request ### 
@@ -236,7 +237,7 @@ localhost:3000/locate
     ]
 }
 ```
-
+---
 GET `/locate/:name`   
 Gets all beers with a specific name
 ### Request ### 
@@ -260,7 +261,7 @@ localhost:3000/locate/hoegarden
     ]
 }
 ```
-
+---
 GET `/count?email=[email]` 
 Gets a breakdown of beers added by date specific to a given email  
 ### Request ###
@@ -279,7 +280,7 @@ localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
     "total": 1
 }
 ```
-
+---
 POST `/count?email=[email]`   
 Gets a breakdown of beers added by date specific to a given email in a given timeframe  
 ### Request ###
@@ -305,6 +306,7 @@ localhost:3000/count?email=bruce.wayne@gothamcitycouncil.com
     "total": 1
 }
 ```
+---
 DELETE `/beers/delete/:id`  
 Deletes a beer with a given id
 ### Request ###
